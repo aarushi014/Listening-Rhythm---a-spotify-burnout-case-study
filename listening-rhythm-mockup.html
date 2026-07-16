@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Listening Rhythm — Spotify feature concept mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#0a0a0a;
+    --surface:#121212;
+    --surface-alt:#181818;
+    --surface-raised:#1f1f1f;
+    --hairline:#282828;
+    --text:#ffffff;
+    --text-dim:#b3b3b3;
+    --text-faint:#727272;
+    --spotify-green:#1ed760;
+    --rhythm:#8b7dff;
+    --rhythm-soft:#c9c2ff;
+    --rhythm-dim:#2a2640;
+    --erratic:#ff6f5e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#050505;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    padding:48px 24px 72px;
+  }
+  .wrap{max-width:1240px;margin:0 auto;}
+
+  .masthead{margin-bottom:40px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--rhythm-soft);
+    margin:0 0 12px;
+  }
+  h1{
+    font-family:'Sora',sans-serif;
+    font-weight:600;
+    font-size:34px;
+    line-height:1.15;
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  .sub{
+    font-size:15px;
+    color:var(--text-dim);
+    max-width:640px;
+    line-height:1.6;
+    margin:0;
+  }
+
+  .rail{
+    display:flex;
+    gap:28px;
+    overflow-x:auto;
+    padding:12px 4px 24px;
+    scroll-snap-type:x proximity;
+  }
+  .rail::-webkit-scrollbar{height:8px;}
+  .rail::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:8px;}
+
+  .frame{
+    flex:0 0 300px;
+    scroll-snap-align:start;
+  }
+  .frame-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    margin:0 0 10px 4px;
+    letter-spacing:0.04em;
+  }
+  .frame-label b{color:var(--text-dim);font-weight:500;}
+
+  .phone{
+    width:300px;
+    height:620px;
+    background:var(--bg);
+    border-radius:34px;
+    border:8px solid #1a1a1a;
+    box-shadow:0 0 0 1px #000, 0 30px 60px -20px rgba(0,0,0,0.7);
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .statusbar{
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    font-size:11px;
+    color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace;
+    flex:none;
+  }
+  .screen{
+    flex:1;
+    overflow-y:auto;
+    padding:8px 16px 16px;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 2px 18px;
+  }
+  .topbar .greet{font-family:'Sora',sans-serif;font-weight:600;font-size:19px;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:#3a3a3a;flex:none;}
+
+  .card{
+    background:var(--surface-alt);
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:12px;
+  }
+  .card-row{display:flex;gap:12px;align-items:center;}
+  .art{width:52px;height:52px;border-radius:6px;flex:none;background:linear-gradient(135deg,#2a2a2a,#1a1a1a);}
+  .row-title{font-size:14px;font-weight:500;margin:0 0 3px;}
+  .row-sub{font-size:12px;color:var(--text-dim);margin:0;}
+
+  /* rhythm insight card */
+  .rhythm-card{
+    background:linear-gradient(180deg, var(--rhythm-dim) 0%, var(--surface-alt) 100%);
+    border:1px solid #342f52;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .rhythm-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--rhythm-soft);
+    background:rgba(139,125,255,0.12);
+    padding:4px 8px;
+    border-radius:20px;
+    margin-bottom:10px;
+  }
+  .rhythm-tag .dot{width:5px;height:5px;border-radius:50%;background:var(--rhythm);}
+  .rhythm-headline{font-size:14px;line-height:1.45;margin:0 0 12px;color:var(--text);}
+
+  .pulse-strip{display:flex;align-items:flex-end;gap:3px;height:34px;margin-bottom:10px;}
+  .pulse{width:5px;border-radius:2px;background:var(--rhythm-soft);}
+
+  .btn-row{display:flex;gap:8px;}
+  .btn{
+    flex:1;
+    text-align:center;
+    font-size:12px;
+    font-weight:500;
+    padding:9px 0;
+    border-radius:20px;
+    font-family:'Inter',sans-serif;
+  }
+  .btn.ghost{background:transparent;border:1px solid #3a3a3a;color:var(--text-dim);}
+  .btn.solid{background:var(--rhythm);color:#100c26;}
+  .btn.green{background:var(--spotify-green);color:#0a2313;}
+
+  .bottomnav{
+    flex:none;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0 16px;
+    border-top:1px solid var(--hairline);
+  }
+  .navitem{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .navicon{width:20px;height:20px;border-radius:4px;background:#3a3a3a;}
+  .navicon.on{background:var(--text);}
+  .navlabel{font-size:9px;color:var(--text-faint);}
+  .navlabel.on{color:var(--text);}
+
+  /* screen 1: opt-in */
+  .optin-hero{
+    height:150px;
+    border-radius:12px;
+    background:linear-gradient(160deg,#241d47 0%, #120f22 70%);
+    margin-bottom:18px;
+    position:relative;
+    overflow:hidden;
+    display:flex;align-items:flex-end;
+    padding:16px;
+  }
+  .optin-hero .waveglyph{position:absolute;top:18px;left:16px;right:16px;height:40px;}
+  .optin-title{font-family:'Sora',sans-serif;font-weight:600;font-size:18px;line-height:1.3;margin:0;}
+  .body-text{font-size:13px;line-height:1.65;color:var(--text-dim);margin:0 0 14px;}
+  .checklist{margin:0 0 20px;padding:0;list-style:none;}
+  .checklist li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:12.5px;color:var(--text-dim);
+    padding:8px 0;
+    border-bottom:1px solid var(--hairline);
+    line-height:1.5;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .mark{color:var(--rhythm-soft);flex:none;font-family:'IBM Plex Mono',monospace;font-size:12px;padding-top:1px;}
+
+  /* screen 3: report */
+  .report-stat{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:10px 0;border-bottom:1px solid var(--hairline);
+  }
+  .report-stat:last-child{border-bottom:none;}
+  .stat-label{font-size:12.5px;color:var(--text-dim);}
+  .stat-value{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text);}
+  .stat-value.shift{color:var(--rhythm-soft);}
+
+  .chart-block{
+    background:var(--surface-alt);
+    border-radius:10px;
+    padding:14px 14px 6px;
+    margin-bottom:14px;
+  }
+  .chart-label{font-size:11px;color:var(--text-faint);margin:0 0 10px;font-family:'IBM Plex Mono',monospace;}
+  .bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
+  .bar{flex:1;border-radius:3px 3px 0 0;}
+  .bar-days{display:flex;gap:6px;margin-top:6px;}
+  .bar-days span{flex:1;text-align:center;font-size:9px;color:var(--text-faint);}
+
+  /* screen 4: reset playlist */
+  .reset-hero{
+    height:170px;border-radius:12px;
+    background:linear-gradient(150deg,#0f2a1e,#0a1410);
+    margin-bottom:16px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:16px;
+  }
+  .track-row{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 0;border-bottom:1px solid var(--hairline);
+  }
+  .track-row:last-child{border-bottom:none;}
+  .track-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-faint);width:16px;}
+
+  .captions{
+    max-width:300px;
+    margin-top:16px;
+  }
+  .captions p{
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--text-dim);
+    margin:0;
+  }
+  .captions b{color:var(--text);font-weight:500;}
+
+  @media (max-width:680px){
+    .phone{width:270px;height:560px;}
+    .frame{flex-basis:270px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <p class="eyebrow">Concept mockup — not an official Spotify product</p>
+    <h1>Listening Rhythm</h1>
+    <p class="sub">Four core screens for an opt-in, non-diagnostic wellbeing signal built from listening behavior: onboarding, a quiet in-feed insight, the full weekly report, and the one actionable output.</p>
+  </div>
+
+  <div class="rail">
+
+    <!-- SCREEN 1: OPT-IN -->
+    <div class="frame">
+      <p class="frame-label">01 · <b>opt-in card</b> — shown once, in Discover tab</p>
+      <div class="phone">
+        <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="optin-hero">
+            <svg class="waveglyph" viewBox="0 0 280 40" preserveAspectRatio="none">
+              <polyline points="0,20 20,20 30,10 40,28 50,20 70,20 80,6 90,32 100,20 120,20 130,14 140,24 150,20 170,20 180,8 190,30 200,20 220,20 230,16 240,22 250,20 280,20"
+                fill="none" stroke="#8b7dff" stroke-width="2" opacity="0.8"/>
+            </svg>
+            <p class="optin-title">Meet Listening Rhythm</p>
+          </div>
+          <p class="body-text">A quiet, optional look at how your listening habits shift over time. Off by default. Nothing here is shared or used for ads.</p>
+          <ul class="checklist">
+            <li><span class="mark">＋</span> Tracks listening times, skip rate, and repeat plays — never lyrics or audio content</li>
+            <li><span class="mark">＋</span> Compares only to your own past listening, never to other users</li>
+            <li><span class="mark">－</span> Never labels a mental state, and never sends a push notification</li>
+            <li><span class="mark">－</span> Turn off anytime in one tap, no questions asked</li>
+          </ul>
+          <div class="btn-row">
+            <div class="btn ghost">Not now</div>
+            <div class="btn solid">Try it</div>
+          </div>
+        </div>
+        <div class="bottomnav">
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Home</span></div>
+          <div class="navitem"><div class="navicon on"></div><span class="navlabel on">Discover</span></div>
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Library</span></div>
+        </div>
+      </div>
+      <div class="captions">
+        <p><b>Why it looks like this:</b> the pulse line is the feature's one visual signature — it will reappear, subtly changed, on every other screen so the concept never needs re-explaining.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: HOME INSIGHT CARD -->
+    <div class="frame">
+      <p class="frame-label">02 · <b>home feed insight</b> — appears only when a shift is detected</p>
+      <div class="phone">
+        <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="topbar">
+            <p class="greet">Good evening</p>
+            <div class="avatar"></div>
+          </div>
+
+          <div class="rhythm-card">
+            <div class="rhythm-tag"><span class="dot"></span>Listening rhythm</div>
+            <p class="rhythm-headline">Your late-night sessions are up this week, and you've replayed the same playlist five nights running.</p>
+            <div class="pulse-strip">
+              <div class="pulse" style="height:14px;background:#8b7dff"></div>
+              <div class="pulse" style="height:18px;background:#8b7dff"></div>
+              <div class="pulse" style="height:10px;background:#8b7dff"></div>
+              <div class="pulse" style="height:26px;background:#c9c2ff"></div>
+              <div class="pulse" style="height:30px;background:#c9c2ff"></div>
+              <div class="pulse" style="height:22px;background:#c9c2ff"></div>
+              <div class="pulse" style="height:32px;background:#ff6f5e"></div>
+            </div>
+            <div class="btn-row">
+              <div class="btn ghost">Not now</div>
+              <div class="btn solid">Tell me more</div>
+            </div>
+          </div>
+
+          <p class="row-sub" style="margin:0 0 10px 2px;">Jump back in</p>
+          <div class="card"><div class="card-row"><div class="art"></div><div><p class="row-title">Late Night Lo-Fi</p><p class="row-sub">Playlist · played 5 nights running</p></div></div></div>
+          <div class="card"><div class="card-row"><div class="art"></div><div><p class="row-title">Discover Weekly</p><p class="row-sub">Updated Monday</p></div></div></div>
+        </div>
+        <div class="bottomnav">
+          <div class="navitem"><div class="navicon on"></div><span class="navlabel on">Home</span></div>
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Discover</span></div>
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Library</span></div>
+        </div>
+      </div>
+      <div class="captions">
+        <p><b>Why it looks like this:</b> the card sits below the fold, not on top of it — it never interrupts. Copy names behavior ("late-night sessions are up"), never a feeling or diagnosis.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: WEEKLY REPORT -->
+    <div class="frame">
+      <p class="frame-label">03 · <b>weekly rhythm report</b> — reached via "Tell me more"</p>
+      <div class="phone">
+        <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="topbar">
+            <p class="greet" style="font-size:16px;">This week's rhythm</p>
+          </div>
+
+          <div class="chart-block">
+            <p class="chart-label">SESSION START TIME, LAST 7 DAYS</p>
+            <div class="bars">
+              <div class="bar" style="height:30%;background:#8b7dff"></div>
+              <div class="bar" style="height:35%;background:#8b7dff"></div>
+              <div class="bar" style="height:32%;background:#8b7dff"></div>
+              <div class="bar" style="height:55%;background:#c9c2ff"></div>
+              <div class="bar" style="height:68%;background:#c9c2ff"></div>
+              <div class="bar" style="height:80%;background:#ff6f5e"></div>
+              <div class="bar" style="height:88%;background:#ff6f5e"></div>
+            </div>
+            <div class="bar-days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          </div>
+
+          <div class="card" style="padding:14px 16px;">
+            <div class="report-stat"><span class="stat-label">Late-night sessions (after 1am)</span><span class="stat-value shift">4 → up from 1</span></div>
+            <div class="report-stat"><span class="stat-label">Skip rate</span><span class="stat-value shift">6% → down from 24%</span></div>
+            <div class="report-stat"><span class="stat-label">Repeat-track ratio</span><span class="stat-value shift">61% → up from 12%</span></div>
+            <div class="report-stat"><span class="stat-label">Average track energy</span><span class="stat-value shift">Lower than usual</span></div>
+          </div>
+
+          <p class="body-text" style="margin-top:14px;">This is a reflection of your listening patterns, not a diagnosis. If you'd like, here's one thing that might help right now.</p>
+
+          <div class="btn-row">
+            <div class="btn ghost">Just data, thanks</div>
+            <div class="btn solid">See reset playlist</div>
+          </div>
+        </div>
+        <div class="bottomnav">
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Home</span></div>
+          <div class="navitem"><div class="navicon on"></div><span class="navlabel on">Discover</span></div>
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Library</span></div>
+        </div>
+      </div>
+      <div class="captions">
+        <p><b>Why it looks like this:</b> every number is comparative to the user's own baseline, framed as data ("down from 24%"), not interpretation. The disclaimer sits in plain body text, not fine print.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: RESET PLAYLIST -->
+    <div class="frame">
+      <p class="frame-label">04 · <b>reset playlist</b> — the one actionable output</p>
+      <div class="phone">
+        <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="reset-hero">
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--spotify-green);margin:0 0 6px;">Made for you, tonight</p>
+            <p class="optin-title">Reset</p>
+          </div>
+          <p class="body-text">Lower tempo, familiar artists, nothing that demands attention. Built from tracks you've returned to before.</p>
+
+          <div class="btn-row" style="margin-bottom:16px;">
+            <div class="btn green">Play</div>
+            <div class="btn ghost">Save</div>
+          </div>
+
+          <div class="track-row"><span class="track-num">1</span><div class="art" style="width:38px;height:38px;"></div><div><p class="row-title">Holocene</p><p class="row-sub">Bon Iver</p></div></div>
+          <div class="track-row"><span class="track-num">2</span><div class="art" style="width:38px;height:38px;"></div><div><p class="row-title">Svefn-g-englar</p><p class="row-sub">Sigur Rós</p></div></div>
+          <div class="track-row"><span class="track-num">3</span><div class="art" style="width:38px;height:38px;"></div><div><p class="row-title">Weightless</p><p class="row-sub">Marconi Union</p></div></div>
+          <div class="track-row"><span class="track-num">4</span><div class="art" style="width:38px;height:38px;"></div><div><p class="row-title">Re: Stacks</p><p class="row-sub">Bon Iver</p></div></div>
+
+          <p class="row-sub" style="margin-top:16px;">Want to talk to someone instead? <span style="color:var(--rhythm-soft);">See support options</span></p>
+        </div>
+        <div class="bottomnav">
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Home</span></div>
+          <div class="navitem"><div class="navicon"></div><span class="navlabel">Discover</span></div>
+          <div class="navitem"><div class="navicon on"></div><span class="navlabel on">Library</span></div>
+        </div>
+      </div>
+      <div class="captions">
+        <p><b>Why it looks like this:</b> the support link exists but sits last, small, and user-initiated — present for the person who needs it, invisible to the person who doesn't.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
