@@ -1,5 +1,6 @@
 
 # Listening Rhythm
+**Author:** Aarushi Singh
 
 **A UX/product case study — listener burnout detection, reimagined for Spotify**
 
@@ -9,7 +10,7 @@
 
 ## What this is
 
-No published case study currently documents a real product detecting *listener* burnout from music-streaming behavior. Adjacent academic research exists (see [Background & research](#background--research)), but nothing productizes it. This repo is that missing case study: a full problem framing, ethical constraints, feature design, and interactive UI mockups for **Listening Rhythm** — an opt-in, non-diagnostic wellbeing signal built entirely from passive listening behavior.
+No published case study currently documents a real product detecting *listener* burnout from music-streaming behavior. Adjacent academic research exists, but nothing productizes it. This repo is that missing case study: a full problem framing, ethical constraints, feature design, and interactive UI mockups for **Listening Rhythm** — an opt-in, non-diagnostic wellbeing signal built entirely from passive listening behavior.
 
 The design is built around one constraint that shapes every decision in it: **a music app should never play therapist.**
 
@@ -17,10 +18,10 @@ The design is built around one constraint that shapes every decision in it: **a 
 
 | File | Description |
 |---|---|
-| [`case-study.md`](./case-study.md) | Full write-up: problem framing, research grounding, persona, ethical guardrails, feature spec, user flow, success metrics, risks |
+| [`case-study.md`](./case-study-(1).md) | Full write-up: problem framing, research grounding, persona, ethical guardrails, feature spec, user flow, success metrics, risks |
 | [`listening-rhythm-mockup.html`](./listening-rhythm-mockup.html) | Self-contained, interactive HTML mockup of the four core screens — open directly in any browser, no build step |
 | [`listening-rhythm-case-study.tex`](./listening-rhythm-case-study.tex) | LaTeX source of the case study, ready to paste into Overleaf or compile locally with `pdflatex` |
-| [`listening-rhythm-case-study.pdf`](./listening-rhythm-case-study.pdf) | Compiled PDF of the above |
+| [`listening-rhythm-case-study.pdf`](./Case-Study_Spotify-Burnout-Detector.pdf) | Compiled PDF of the above |
 
 ## Viewing the mockup
 
@@ -53,7 +54,7 @@ This concept is grounded in real published research on music-listening behavior 
 - **Mood Music** (University of Bristol) — linked Spotify streaming history + Ecological Momentary Assessment + PHQ-9/GAD-7/SWEMWBS scores across 171 university students, finding streaming metadata correlates with real-time mood
 - Stress-recovery listening research showing measurable audio-feature shifts (energy, valence, tempo) in self-selected music after stressful events
 
-Full citations and discussion are in [`case-study.md`](./case-study.md#3-research-grounding).
+Full citations and discussion are in [`case-study.md`](./case-study-(1).md#3-research-grounding).
 
 ## Why the ethics section isn't an afterthought
 
